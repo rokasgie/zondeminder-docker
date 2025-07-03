@@ -2,6 +2,7 @@ services:
   mysql:
     image: mysql:8.0.42
     command: --default-authentication-plugin=mysql_native_password
+    restart: unless-stopped    
     volumes:
       - mysql-data:/var/lib/mysql
     environment:
@@ -15,8 +16,9 @@ services:
     image: zoneminder
     build: .
     shm_size: 1G
+    restart: unless-stopped
     ports:
-      - 8080:80
+      - 80:80
     volumes:
       - ./cache:/var/cache/zoneminder
       - ./zm-log:/var/log/zm
