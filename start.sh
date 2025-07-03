@@ -35,6 +35,19 @@ fi
 
 # Secure zm.conf
 chown root:www-data /etc/zm/zm.conf && chmod 640 /etc/zm/zm.conf
+# Create necessary ZoneMinder cache directories with proper permissions
+if [ ! -d /var/cache/zoneminder/events ]; then
+    echo "Creating /var/cache/zoneminder subdirectories and setting permissions"
+    mkdir -p /var/cache/zoneminder/{events,images,temp,cache}
+    chown -R root:www-data /var/cache/zoneminder
+    chmod -R 770 /var/cache/zoneminder
+fi
+
+# Fix ownership and permissions on zm config and logs
+echo "Setting ownership and permissions on /etc/zm and /var/log/zm"
+chown -R root:www-data /etc/zm
+chown -R www-data:www-data /var/log/zm
+chmod -R 770 /etc/zm /var/log/zm
 
 # Enable required Apache modules
 a2enmod rewrite
